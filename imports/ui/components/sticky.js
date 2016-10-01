@@ -9,6 +9,20 @@ export class Sticky extends Component {
     }
     const stickies = document.querySelectorAll('[data-sticky]')
     setinitialHeights(stickies)
+    document.addEventListener('scroll', () => {
+      const top = document.documentElement.scrollTop || document.body.scrollTop
+      const bottom = document.documentElement.scrollHeight || document.body.scrollHeight;
+      stickies.forEach.call(stickies, (sticky) => {
+        const stickyInitial = parseInt(sticky.getAttribute('data-sticky-initial'), 10)
+        const stickyEnter = parseInt(sticky.getAttribute('data-sticky-enter'), 10) || stickyInitial
+        const stickyExit = parseInt(sticky.getAttribute('data-sticky-exit'), 10) || bottom
+        if (top >= stickyEnter && top <= stickyExit) {
+          sticky.classList.add('sticky')
+        } else {
+          sticky.classList.remove('sticky')
+        }
+      })
+    })
   }
   render() {
     const { className, enter, exit, children } = this.props
